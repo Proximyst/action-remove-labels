@@ -21,7 +21,17 @@ async function run(): Promise<void> {
 
     const client = github.getOctokit(githubToken);
 
-    for (const label of labels) {
+    const existing = (
+      await client.issues.listLabelsOnIssue({
+        owner,
+        repo,
+        issue_number: number
+      })
+    ).data.map(d => d.name);
+
+    const remaining = labels.filter(l => existing.includes(l));
+
+    for (const label of remaining) {
       await client.issues.removeLabel({
         name: label,
         owner,

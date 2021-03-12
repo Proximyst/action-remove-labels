@@ -29,12 +29,7 @@ async function run(): Promise<void> {
       })
     ).data.map(d => d.name);
 
-    core.info(`existing: ${existing.join(', ')}`);
-    core.info(`labels: ${labels.join(', ')}`);
-
     const remaining = labels.filter(l => existing.includes(l));
-
-    core.info(`remaining: ${remaining.join(', ')}`);
 
     for (const label of remaining) {
       await client.issues.removeLabel({
